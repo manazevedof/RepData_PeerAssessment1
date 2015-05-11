@@ -4,15 +4,38 @@ output:
   html_document:
     keep_md: true
 ---
-
-
+```{r, echo=TRUE}
+require(data.table)
+require(dplyr)
+```
 ## Loading and preprocessing the data
-
-
+```{r, echo=FALSE}
+data <- fread('activity.csv')
+```
 
 ## What is mean total number of steps taken per day?
 
+###1. Calculate the total number of steps taken per day:
+```{r, echo=TRUE}
+spd <- group_by(data,date) %>% summarise(n=sum(steps))
+spd
+```
 
+###2. Make a histogram of the total number of steps taken each day
+```{r, echo=TRUE}
+hist(spd$n,main="Steps taken per day",xlab="steps",col="darkgreen")
+```
+
+###3. Calculate and report the mean and median of the total number of steps taken per day
+```{r, echo=TRUE}
+mean_spd <- mean(spd$n,na.rm=TRUE)
+median_spd <- median(spd$n,na.rm=TRUE)
+options(scipen=1, digits=2)
+```
+
+The mean of the total number of steps taken per day is **`r mean_spd`**.
+
+The median of the total number of steps taken per day is **`r median_spd`**.
 
 ## What is the average daily activity pattern?
 
