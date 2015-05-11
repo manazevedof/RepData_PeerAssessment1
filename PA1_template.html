@@ -80,21 +80,21 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <h2>What is mean total number of steps taken per day?</h2>
 <div id="calculate-the-total-number-of-steps-taken-per-day" class="section level3">
 <h3>1. Calculate the total number of steps taken per day:</h3>
-<pre class="r"><code>spd &lt;- group_by(data,date) %&gt;% summarise(n=sum(steps))
+<pre class="r"><code>spd &lt;- na.omit(data) %&gt;% group_by(date) %&gt;% summarise(n=sum(steps))
 spd</code></pre>
-<pre><code>## Source: local data table [61 x 2]
+<pre><code>## Source: local data table [53 x 2]
 ## 
 ##          date     n
-## 1  2012-10-01    NA
-## 2  2012-10-02   126
-## 3  2012-10-03 11352
-## 4  2012-10-04 12116
-## 5  2012-10-05 13294
-## 6  2012-10-06 15420
-## 7  2012-10-07 11015
-## 8  2012-10-08    NA
-## 9  2012-10-09 12811
-## 10 2012-10-10  9900
+## 1  2012-10-02   126
+## 2  2012-10-03 11352
+## 3  2012-10-04 12116
+## 4  2012-10-05 13294
+## 5  2012-10-06 15420
+## 6  2012-10-07 11015
+## 7  2012-10-09 12811
+## 8  2012-10-10  9900
+## 9  2012-10-11 10304
+## 10 2012-10-12 17382
 ## ..        ...   ...</code></pre>
 </div>
 <div id="make-a-histogram-of-the-total-number-of-steps-taken-each-day" class="section level3">

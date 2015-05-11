@@ -17,7 +17,7 @@ data <- fread('activity.csv')
 
 ###1. Calculate the total number of steps taken per day:
 ```{r, echo=TRUE}
-spd <- group_by(data,date) %>% summarise(n=sum(steps))
+spd <- na.omit(data) %>% group_by(date) %>% summarise(n=sum(steps))
 spd
 ```
 
