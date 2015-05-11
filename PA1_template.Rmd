@@ -8,9 +8,10 @@ output:
 ```{r, echo=TRUE}
 require(data.table)
 require(dplyr)
+require(lubridate)
 ```
 ## Loading and preprocessing the data
-```{r, echo=FALSE}
+```{r, echo=TRUE}
 data <- fread('activity.csv')
 ```
 

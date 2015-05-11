@@ -33,8 +33,32 @@ require(dplyr)
 ## 
 ##     intersect, setdiff, setequal, union
 ```
+
+```r
+require(lubridate)
+```
+
+```
+## Loading required package: lubridate
+```
+
+```
+## Warning: package 'lubridate' was built under R version 3.1.3
+```
+
+```
+## 
+## Attaching package: 'lubridate'
+## 
+## The following objects are masked from 'package:data.table':
+## 
+##     hour, mday, month, quarter, wday, week, yday, year
+```
 ## Loading and preprocessing the data
 
+```r
+data <- fread('activity.csv')
+```
 
 ## What is mean total number of steps taken per day?
 
