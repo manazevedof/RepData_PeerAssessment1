@@ -66,10 +66,23 @@ The total number os missing values in the dataset is **`r nofnas`**.
 
 ###2. Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.
 
-The strategy is the use of the average number of steps of the same day of the week and the same month??? parece meio complicadinho  
+The strategy is the use of the average number of steps of the same day of the week and the same interval.
+
+```{r, echo=TRUE}
+base <- na.omit(data) %>% mutate(wday=wday(date)) %>%
+  group_by(wday,interval) %>% summarise(mean=mean(steps))
+```
+
 
 ###3. Create a new dataset that is equal to the original dataset but with the missing data filled in.
+```{r, echo=TRUE}
+NAdata <- mutate(data,wday=wday(date)) %>% 
+  filter(is.na(steps)) %>%
+  mutate(steps = floor(base[((base$wday==wday) & (base$interval==interval))]$mean))
 
+notNAdata <- omit.na(data)
+
+```
 
 ###4. Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
