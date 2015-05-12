@@ -8,10 +8,6 @@ require(data.table)
 ## Loading required package: data.table
 ```
 
-```
-## Warning: package 'data.table' was built under R version 3.1.3
-```
-
 ```r
 require(dplyr)
 ```
@@ -40,13 +36,6 @@ require(lubridate)
 
 ```
 ## Loading required package: lubridate
-```
-
-```
-## Warning: package 'lubridate' was built under R version 3.1.3
-```
-
-```
 ## 
 ## Attaching package: 'lubridate'
 ## 
@@ -151,6 +140,41 @@ The strategy is the use of the average number of steps of the same day of the we
 
 
 ###1. Create a new factor variable in the dataset with two levels - "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
+
+```r
+tday <- function(x) {if ((x==7)|(x==1)) {return("weekend")} else {return("weekday")}}
+avnust <- na.omit(data) %>% 
+    mutate(wday=wday(date)) %>%
+    mutate(type = tday(wday))
+```
+
+```
+## Warning in if ((x == 7) | (x == 1)) {: the condition has length > 1 and
+## only the first element will be used
+```
+
+```r
+avnust
+```
+
+```
+##        steps       date interval wday    type
+##     1:     0 2012-10-02        0    3 weekday
+##     2:     0 2012-10-02        5    3 weekday
+##     3:     0 2012-10-02       10    3 weekday
+##     4:     0 2012-10-02       15    3 weekday
+##     5:     0 2012-10-02       20    3 weekday
+##    ---                                       
+## 15260:     0 2012-11-29     2335    5 weekday
+## 15261:     0 2012-11-29     2340    5 weekday
+## 15262:     0 2012-11-29     2345    5 weekday
+## 15263:     0 2012-11-29     2350    5 weekday
+## 15264:     0 2012-11-29     2355    5 weekday
+```
+
+```r
+#    group_by(interval) %>% summarise(mean = mean(steps))
+```
 
 
 ###2. Make a panel plot containing a time series plot (i.e. type = "l" ) of the 5-minute interval (xaxis) and the average number of steps taken, averaged across all weekday days or weekend days (yaxis). 

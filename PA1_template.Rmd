@@ -79,6 +79,16 @@ The strategy is the use of the average number of steps of the same day of the we
 
 
 ###1. Create a new factor variable in the dataset with two levels - "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
+```{r, echo=TRUE}
+tday <- function(x) {if ((x==7)|(x==1)) {return("weekend")} else {return("weekday")}}
+avnust <- na.omit(data) %>% 
+    mutate(wday=wday(date)) %>%
+    mutate(type = tday(wday))
+avnust
+
+#    group_by(interval) %>% summarise(mean = mean(steps))
+
+```
 
 
 ###2. Make a panel plot containing a time series plot (i.e. type = "l" ) of the 5-minute interval (xaxis) and the average number of steps taken, averaged across all weekday days or weekend days (yaxis). 
