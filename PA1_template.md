@@ -1,11 +1,7 @@
 # Reproducible Research: Peer Assessment 1
 
 ```r
-require(data.table)
-```
-
-```
-## Loading required package: data.table
+library(data.table)
 ```
 
 ```
@@ -13,11 +9,10 @@ require(data.table)
 ```
 
 ```r
-require(dplyr)
+library(dplyr)
 ```
 
 ```
-## Loading required package: dplyr
 ## 
 ## Attaching package: 'dplyr'
 ## 
@@ -35,11 +30,7 @@ require(dplyr)
 ```
 
 ```r
-require(lubridate)
-```
-
-```
-## Loading required package: lubridate
+library(lubridate)
 ```
 
 ```
@@ -220,7 +211,6 @@ The mean of the total number of steps taken per day is **10809.79**. Without the
 The median of the total number of steps taken per day is **11015**. Without the rows with NAs, the value was **10765**.  
 
 ## Are there differences in activity patterns between weekdays and weekends?
-
 
 ###1. Create a new factor variable in the dataset with two levels - "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
 
