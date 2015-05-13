@@ -4,6 +4,7 @@ output:
   html_document:
     keep_md: yes
   pdf_document: default
+  word_document: default
 ---
 ```{r, echo=TRUE}
 require(data.table)
@@ -25,18 +26,18 @@ spd
 
 ###2. Make a histogram of the total number of steps taken each day
 ```{r, echo=TRUE}
-hist(spd$n,main="Steps taken per day",xlab="steps",col="darkgreen")
+hist(spd$n,main="Steps taken per day (NAs removed)",xlab="steps",col="darkgreen")
 ```
 
 ###3. Calculate and report the mean and median of the total number of steps taken per day
 ```{r, echo=TRUE}
 mean_spd <- mean(spd$n,na.rm=TRUE)
 median_spd <- median(spd$n,na.rm=TRUE)
+spd
 options(scipen=1, digits=2)
 ```
 
-The mean of the total number of steps taken per day is **`r mean_spd`**.
-
+The mean of the total number of steps taken per day is **`r mean_spd`**.  
 The median of the total number of steps taken per day is **`r median_spd`**.
 
 ## What is the average daily activity pattern?
@@ -70,23 +71,34 @@ The strategy is the use of the average number of steps of the same day of the we
 
 ```{r, echo=TRUE}
 base <- na.omit(data) %>% mutate(wday=wday(date)) %>%
-  group_by(wday,interval) %>% summarise(mean=mean(steps))
+  group_by(wday,interval) %>% summarise(mean=as.integer(mean(steps)))
 ```
 
 
 ###3. Create a new dataset that is equal to the original dataset but with the missing data filled in.
 ```{r, echo=TRUE}
-NAdata <- mutate(data,wday=wday(date)) %>% 
-  filter(is.na(steps)) %>%
-  mutate(steps = floor(base[((base$wday==wday) & (base$interval==interval))]$mean))
-
-notNAdata <- omit.na(data)
-
+NAdata <- mutate(data,wday=wday(date)) %>% filter(is.na(steps))
+noNAdata <- na.omit(data) %>% mutate(wday=wday(date))
+setkey(base,wday,interval)
+setkey(NAdata,wday,interval)
+x <- base[NAdata]
+NAdata <- select(x,mean,date,interval,wday)
+setnames(NAdata,"mean","steps")
+L = list(NAdata,noNAdata)
+newdata <- rbindlist(L) %>% arrange(date,interval)
 ```
 
 ###4. Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
+```{r, echo=TRUE}
+spd <- group_by(newdata,date) %>% summarise(n=sum(steps))
+spd
+hist(spd$n,main="Steps taken per day (NAs filled)",xlab="steps",col="darkblue")
+newmean_spd <- mean(spd$n,na.rm=TRUE)
+newmedian_spd <- median(spd$n,na.rm=TRUE)
+```
 
-
+The mean of the total number of steps taken per day is **`r newmean_spd`**. Without the rows with NAs, the value was **`r mean_spd`**.  
+The median of the total number of steps taken per day is **`r newmedian_spd`**. Without the rows with NAs, the value was **`r median_spd`**.  
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
