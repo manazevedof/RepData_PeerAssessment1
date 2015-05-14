@@ -2,13 +2,6 @@
 
 ```r
 library(data.table)
-```
-
-```
-## Warning: package 'data.table' was built under R version 3.1.3
-```
-
-```r
 library(dplyr)
 ```
 
@@ -34,16 +27,16 @@ library(lubridate)
 ```
 
 ```
-## Warning: package 'lubridate' was built under R version 3.1.3
-```
-
-```
 ## 
 ## Attaching package: 'lubridate'
 ## 
 ## The following objects are masked from 'package:data.table':
 ## 
 ##     hour, mday, month, quarter, wday, week, yday, year
+```
+
+```r
+library(ggplot2)
 ```
 ## Loading and preprocessing the data
 
@@ -205,7 +198,11 @@ hist(spd$n,main="Steps taken per day (NAs filled)",xlab="steps",col="darkblue")
 ```r
 newmean_spd <- mean(spd$n,na.rm=TRUE)
 newmedian_spd <- median(spd$n,na.rm=TRUE)
+
+qplot(spd$n, geom="histogram",binwidth = 2500,fill=I("darkred"),col=I("black"),ylab="Frequency",xlab="Steps",main="Steps taken per day (NAs filled)")
 ```
+
+![](PA1_template_files/figure-html/unnamed-chunk-11-2.png) 
 
 The mean of the total number of steps taken per day is **10809.79**. Without the rows with NAs, the value was **10766.19**.  
 The median of the total number of steps taken per day is **11015**. Without the rows with NAs, the value was **10765**.  
@@ -256,13 +253,17 @@ data2[wday %in% c(1,7),type:="weekend"]
 ###2. Make a panel plot containing a time series plot (i.e. type = "l" ) of the 5-minute interval (xaxis) and the average number of steps taken, averaged across all weekday days or weekend days (yaxis). 
 
 ```r
-avnust1 <- filter(data2,type=="weekday") %>%
-  group_by(interval) %>% summarise(mean = mean(steps))
-avnust2 <- filter(data2,type=="weekend") %>%
-  group_by(interval) %>% summarise(mean = mean(steps))
-par(mfrow=c(1,2))
-plot(avnust1$interval,avnust1$mean,type ="l",main="Weekday",xlab="Interval",ylab="Number of steps",ylim=c(0,200))
-plot(avnust2$interval,avnust2$mean,type ="l",main="Weekend",xlab="Interval",ylab="Number of steps",ylim=c(0,200))
+#avnust1 <- filter(data2,type=="weekday") %>%
+#  group_by(interval) %>% summarise(mean = mean(steps))
+#avnust2 <- filter(data2,type=="weekend") %>%
+#  group_by(interval) %>% summarise(mean = mean(steps))
+#par(mfrow=c(1,2))
+#plot(avnust1$interval,avnust1$mean,type ="l",main="Weekday",xlab="Interval",ylab="Number of steps",ylim=c(0,200))
+#plot(avnust2$interval,avnust2$mean,type ="l",main="Weekend",xlab="Interval",ylab="Number of steps",ylim=c(0,200))
+#p <- group_by(data2,type,interval) %>% summarise(type,interval) 
+avnust <- group_by(data2,type,interval) %>% summarise(mean = mean(steps))
+ggplot(avnust, aes(interval,mean))+geom_line(color="darkgreen")+
+    facet_wrap(~type, ncol=1)
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-13-1.png) 
