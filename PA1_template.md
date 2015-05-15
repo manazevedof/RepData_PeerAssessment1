@@ -101,27 +101,6 @@ qplot(spd$n, geom="histogram",binwidth = 2500,fill=I("darkgreen"),col=I("black")
 ```r
 mean_spd <- mean(spd$n,na.rm=TRUE)
 median_spd <- median(spd$n,na.rm=TRUE)
-spd
-```
-
-```
-## Source: local data table [53 x 2]
-## 
-##          date     n
-## 1  2012-10-02   126
-## 2  2012-10-03 11352
-## 3  2012-10-04 12116
-## 4  2012-10-05 13294
-## 5  2012-10-06 15420
-## 6  2012-10-07 11015
-## 7  2012-10-09 12811
-## 8  2012-10-10  9900
-## 9  2012-10-11 10304
-## 10 2012-10-12 17382
-## ..        ...   ...
-```
-
-```r
 options(scipen=1, digits=2)
 ```
 

@@ -37,7 +37,6 @@ qplot(spd$n, geom="histogram",binwidth = 2500,fill=I("darkgreen"),col=I("black")
 ```{r}
 mean_spd <- mean(spd$n,na.rm=TRUE)
 median_spd <- median(spd$n,na.rm=TRUE)
-spd
 options(scipen=1, digits=2)
 ```
 
