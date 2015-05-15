@@ -47,8 +47,11 @@ The median of the total number of steps taken per day is **`r median_spd`**.
 ###1. Make a time series plot (i.e. type = "l" ) of the 5-minute interval (xaxis) and the average number of steps taken, averaged across all days (yaxis)
 ```{r}
 avnust <- na.omit(data) %>% group_by(interval) %>% summarise(mean = mean(steps))
-plot(avnust$interval,avnust$mean,type ="l",main="Average number of steps taken per 5-minute interval",xlab="Interval",ylab="Number of steps")
-ggplot(avnust, aes(interval,mean))+geom_line(color="darkgreen")
+#plot(avnust$interval,avnust$mean,type ="l",main="Average number of steps taken per 5-minute interval",xlab="Interval",ylab="Number of steps")
+ggplot(avnust, aes(interval,mean))+geom_line(color="darkgreen") +
+    ggtitle("Average number of steps taken per 5-minute interval") +
+    xlab("Interval") +
+    ylab("Number of steps")
 ```
 
 ###2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
@@ -125,6 +128,8 @@ data2[wday %in% c(1,7),type:="weekend"]
 #p <- group_by(data2,type,interval) %>% summarise(type,interval) 
 avnust <- group_by(data2,type,interval) %>% summarise(mean = mean(steps))
 ggplot(avnust, aes(interval,mean))+geom_line(color="darkgreen")+
-    facet_wrap(~type, ncol=1)
-
+    facet_wrap(~type, ncol=1) +
+    ggtitle("Average number of steps taken per 5-minute interval") +
+    xlab("Interval") +
+    ylab("Number of steps")
 ```
