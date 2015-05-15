@@ -27,7 +27,8 @@ spd
 
 ###2. Make a histogram of the total number of steps taken each day
 ```{r}
-hist(spd$n,main="Steps taken per day (NAs removed)",xlab="steps",col="darkgreen")
+#hist(spd$n,main="Steps taken per day (NAs removed)",xlab="steps",col="darkgreen")
+qplot(spd$n, geom="histogram",binwidth = 2500,fill=I("darkgreen"),col=I("black"),ylab="Frequency",xlab="Steps",main="Steps taken per day (NAs removed)")
 ```
 
 ###3. Calculate and report the mean and median of the total number of steps taken per day
@@ -47,6 +48,7 @@ The median of the total number of steps taken per day is **`r median_spd`**.
 ```{r}
 avnust <- na.omit(data) %>% group_by(interval) %>% summarise(mean = mean(steps))
 plot(avnust$interval,avnust$mean,type ="l",main="Average number of steps taken per 5-minute interval",xlab="Interval",ylab="Number of steps")
+ggplot(avnust, aes(interval,mean))+geom_line(color="darkgreen")
 ```
 
 ###2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
@@ -93,11 +95,10 @@ newdata <- rbindlist(L) %>% arrange(date,interval)
 ```{r}
 spd <- group_by(newdata,date) %>% summarise(n=sum(steps))
 spd
-hist(spd$n,main="Steps taken per day (NAs filled)",xlab="steps",col="darkblue")
+#hist(spd$n,main="Steps taken per day (NAs filled)",xlab="steps",col="darkblue")
+qplot(spd$n, geom="histogram",binwidth = 2500,fill=I("darkred"),col=I("black"),ylab="Frequency",xlab="Steps",main="Steps taken per day (NAs filled)")
 newmean_spd <- mean(spd$n,na.rm=TRUE)
 newmedian_spd <- median(spd$n,na.rm=TRUE)
-
-qplot(spd$n, geom="histogram",binwidth = 2500,fill=I("darkred"),col=I("black"),ylab="Frequency",xlab="Steps",main="Steps taken per day (NAs filled)")
 ```
 
 The mean of the total number of steps taken per day is **`r newmean_spd`**. Without the rows with NAs, the value was **`r mean_spd`**.  

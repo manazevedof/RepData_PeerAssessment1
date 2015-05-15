@@ -73,7 +73,8 @@ spd
 ###2. Make a histogram of the total number of steps taken each day
 
 ```r
-hist(spd$n,main="Steps taken per day (NAs removed)",xlab="steps",col="darkgreen")
+#hist(spd$n,main="Steps taken per day (NAs removed)",xlab="steps",col="darkgreen")
+qplot(spd$n, geom="histogram",binwidth = 2500,fill=I("darkgreen"),col=I("black"),ylab="Frequency",xlab="Steps",main="Steps taken per day (NAs removed)")
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-4-1.png) 
@@ -120,6 +121,12 @@ plot(avnust$interval,avnust$mean,type ="l",main="Average number of steps taken p
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-6-1.png) 
+
+```r
+ggplot(avnust, aes(interval,mean))+geom_line(color="darkgreen")
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-6-2.png) 
 
 ###2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
@@ -190,7 +197,8 @@ spd
 ```
 
 ```r
-hist(spd$n,main="Steps taken per day (NAs filled)",xlab="steps",col="darkblue")
+#hist(spd$n,main="Steps taken per day (NAs filled)",xlab="steps",col="darkblue")
+qplot(spd$n, geom="histogram",binwidth = 2500,fill=I("darkred"),col=I("black"),ylab="Frequency",xlab="Steps",main="Steps taken per day (NAs filled)")
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-11-1.png) 
@@ -198,11 +206,7 @@ hist(spd$n,main="Steps taken per day (NAs filled)",xlab="steps",col="darkblue")
 ```r
 newmean_spd <- mean(spd$n,na.rm=TRUE)
 newmedian_spd <- median(spd$n,na.rm=TRUE)
-
-qplot(spd$n, geom="histogram",binwidth = 2500,fill=I("darkred"),col=I("black"),ylab="Frequency",xlab="Steps",main="Steps taken per day (NAs filled)")
 ```
-
-![](PA1_template_files/figure-html/unnamed-chunk-11-2.png) 
 
 The mean of the total number of steps taken per day is **10809.79**. Without the rows with NAs, the value was **10766.19**.  
 The median of the total number of steps taken per day is **11015**. Without the rows with NAs, the value was **10765**.  
