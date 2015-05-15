@@ -2,6 +2,13 @@
 
 ```r
 library(data.table)
+```
+
+```
+## Warning: package 'data.table' was built under R version 3.1.3
+```
+
+```r
 library(dplyr)
 ```
 
@@ -27,6 +34,10 @@ library(lubridate)
 ```
 
 ```
+## Warning: package 'lubridate' was built under R version 3.1.3
+```
+
+```
 ## 
 ## Attaching package: 'lubridate'
 ## 
@@ -37,6 +48,10 @@ library(lubridate)
 
 ```r
 library(ggplot2)
+```
+
+```
+## Warning: package 'ggplot2' was built under R version 3.1.3
 ```
 ## Loading and preprocessing the data
 
@@ -49,7 +64,9 @@ data <- fread('activity.csv')
 ###1. Calculate the total number of steps taken per day:
 
 ```r
-spd <- na.omit(data) %>% group_by(date) %>% summarise(n=sum(steps))
+spd <- na.omit(data) %>% 
+    group_by(date) %>% 
+    summarise(n=sum(steps))
 spd
 ```
 
@@ -73,8 +90,8 @@ spd
 ###2. Make a histogram of the total number of steps taken each day
 
 ```r
-#hist(spd$n,main="Steps taken per day (NAs removed)",xlab="steps",col="darkgreen")
-qplot(spd$n, geom="histogram",binwidth = 2500,fill=I("darkgreen"),col=I("black"),ylab="Frequency",xlab="Steps",main="Steps taken per day (NAs removed)")
+qplot(spd$n, geom="histogram",binwidth = 2500,fill=I("darkgreen"),col=I("black"),ylab="Frequency",
+      xlab="Steps",main="Steps taken per day (NAs removed)")
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-4-1.png) 
@@ -116,9 +133,11 @@ The median of the total number of steps taken per day is **10765**.
 ###1. Make a time series plot (i.e. type = "l" ) of the 5-minute interval (xaxis) and the average number of steps taken, averaged across all days (yaxis)
 
 ```r
-avnust <- na.omit(data) %>% group_by(interval) %>% summarise(mean = mean(steps))
-#plot(avnust$interval,avnust$mean,type ="l",main="Average number of steps taken per 5-minute interval",xlab="Interval",ylab="Number of steps")
-ggplot(avnust, aes(interval,mean))+geom_line(color="darkgreen") +
+avnust <- na.omit(data) %>% 
+    group_by(interval) %>% 
+    summarise(mean = mean(steps))
+ggplot(avnust, aes(interval,mean)) + 
+    geom_line(color="darkgreen") +
     ggtitle("Average number of steps taken per 5-minute interval") +
     xlab("Interval") +
     ylab("Number of steps")
@@ -151,29 +170,35 @@ The strategy is the use of the average number of steps of the same day of the we
 
 
 ```r
-base <- na.omit(data) %>% mutate(wday=wday(date)) %>%
-  group_by(wday,interval) %>% summarise(mean=as.integer(mean(steps)))
+base <- na.omit(data) %>% 
+    mutate(wday=wday(date)) %>% 
+    group_by(wday,interval) %>% 
+    summarise(mean=as.integer(mean(steps)))
 ```
 
 
 ###3. Create a new dataset that is equal to the original dataset but with the missing data filled in.
 
 ```r
-NAdata <- mutate(data,wday=wday(date)) %>% filter(is.na(steps))
-noNAdata <- na.omit(data) %>% mutate(wday=wday(date))
+NAdata <- mutate(data,wday=wday(date)) %>% 
+    filter(is.na(steps))
+noNAdata <- na.omit(data) %>% 
+    mutate(wday=wday(date))
 setkey(base,wday,interval)
 setkey(NAdata,wday,interval)
 x <- base[NAdata]
 NAdata <- select(x,mean,date,interval,wday)
 setnames(NAdata,"mean","steps")
 L = list(NAdata,noNAdata)
-newdata <- rbindlist(L) %>% arrange(date,interval)
+newdata <- rbindlist(L) %>% 
+    arrange(date,interval)
 ```
 
 ###4. Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
 ```r
-spd <- group_by(newdata,date) %>% summarise(n=sum(steps))
+spd <- group_by(newdata,date) %>% 
+    summarise(n=sum(steps))
 spd
 ```
 
@@ -195,8 +220,8 @@ spd
 ```
 
 ```r
-#hist(spd$n,main="Steps taken per day (NAs filled)",xlab="steps",col="darkblue")
-qplot(spd$n, geom="histogram",binwidth = 2500,fill=I("darkred"),col=I("black"),ylab="Frequency",xlab="Steps",main="Steps taken per day (NAs filled)")
+qplot(spd$n, geom="histogram",binwidth = 2500,fill=I("darkred"),col=I("black"),
+      ylab="Frequency",xlab="Steps",main="Steps taken per day (NAs filled)")
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-11-1.png) 
@@ -214,7 +239,8 @@ The median of the total number of steps taken per day is **11015**. Without the 
 ###1. Create a new factor variable in the dataset with two levels - "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
 
 ```r
-data2 <- na.omit(data) %>% mutate(wday=wday(date))
+data2 <- na.omit(data) %>% 
+    mutate(wday=wday(date))
 data2[wday %in% c(2:6),type:="weekday"]
 ```
 
@@ -255,16 +281,9 @@ data2[wday %in% c(1,7),type:="weekend"]
 ###2. Make a panel plot containing a time series plot (i.e. type = "l" ) of the 5-minute interval (xaxis) and the average number of steps taken, averaged across all weekday days or weekend days (yaxis). 
 
 ```r
-#avnust1 <- filter(data2,type=="weekday") %>%
-#  group_by(interval) %>% summarise(mean = mean(steps))
-#avnust2 <- filter(data2,type=="weekend") %>%
-#  group_by(interval) %>% summarise(mean = mean(steps))
-#par(mfrow=c(1,2))
-#plot(avnust1$interval,avnust1$mean,type ="l",main="Weekday",xlab="Interval",ylab="Number of steps",ylim=c(0,200))
-#plot(avnust2$interval,avnust2$mean,type ="l",main="Weekend",xlab="Interval",ylab="Number of steps",ylim=c(0,200))
-#p <- group_by(data2,type,interval) %>% summarise(type,interval) 
 avnust <- group_by(data2,type,interval) %>% summarise(mean = mean(steps))
-ggplot(avnust, aes(interval,mean))+geom_line(color="darkgreen")+
+ggplot(avnust, aes(interval,mean)) +
+    geom_line(color="darkgreen") +
     facet_wrap(~type, ncol=1) +
     ggtitle("Average number of steps taken per 5-minute interval") +
     xlab("Interval") +
