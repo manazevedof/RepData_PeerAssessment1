@@ -1,13 +1,13 @@
 ---
 title: 'Reproducible Research: Peer Assessment 1'
 output:
-  word_document: default
-  pdf_document: default
   html_document:
     keep_md: yes
+  pdf_document: default
+  word_document: default
 ---
 #### Loading the libraries used in the script
-```{r}
+```{r,message=F, warning=F}
 library(data.table)
 library(dplyr)
 library(lubridate)
